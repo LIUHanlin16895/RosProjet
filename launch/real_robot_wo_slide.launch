@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+<param name="robot_description" command="$(find xacro)/xacro $(find projet2022)/urdf/turtlebot3.urdf.xacro " />
+
+<node pkg="mybot_teleop" name="teleop" type="mybot_teleop.py" output="screen" required="true" />
+  <param name="linear_scale" type="double" value="1.0"/> 
+
+  <param name="angular_scale" type="double" value="1.0"/> 
+
+  <param name="topic_choice" type="string" value="/cmd_vel"/>
+
+<!--node pkg="projet2022" name="corridor" type="challenge.py" 
+        output="screen" required="true"/-->
+
+<!--node pkg="projet2022" name="follow" type="challenge2.py" 
+        output="screen" required="true"/-->
+<node pkg="projet2022" name="corridor" type="challenge1_wo_slide.py" 
+        output="screen" required="true"/>
+<!--node pkg="projet2022" name="follow" type="challenge3.py" 
+        output="screen" required="true"/-->
+<!--node pkg="projet2022" name="corridor" type="challenge4.py" 
+        output="screen" required="true"/-->      
+
+<!-- node pkg="projet2022" name="color_slider" type="color_slider.py" output="screen" required="true" /-->
+
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet2022)/rviz/config_real.rviz"/>
+
+</launch>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!-- Gazebo world -->
+<include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find projet2022)/worlds/Projet2022.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+</include>
+
+<!-- Spwan turtlebot in Gazebo -->
+<param name="robot_description" command="$(find xacro)/xacro $(find projet2022)/urdf/turtlebot3.urdf.xacro " />
+<node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model turtlebot3_burger -x 0.95 -y 1.75 -z 0.0 -Y 4.7123 -param robot_description" /> 
+
+<!-- Run one mybot_teleop node -->
+<node pkg="projet2022" name="teleop2" type="mybot_teleop.py" 
+        output="screen" required="true"/>
+<!-- Run one follow node -->
+<node pkg="projet2022" name="corridor" type="challenge2.py" 
+        output="screen" required="true"/>
+
+<!-- RVIZ -->
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(find projet2022)/rviz/config.rviz"/>
+
+<!-- Parametre -->
+<param name = "linear_scale" type = "double" value = "0.1" />
+<param name = "angular_scale" type = "double" value = "0.35" />
+<param name = "topic_cmd_vel" type = "string" value = "/cmd_vel"/>
+<param name = "threshold" type = "double" value = "0.3"/>
+
+</launch>
